@@ -6,7 +6,6 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     const res = await axios.post('http://localhost:3000/auth/register', data);
-
     console.log(res);
   };
   return (
