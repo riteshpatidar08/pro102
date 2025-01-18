@@ -15,24 +15,27 @@ export const login = async (req, res) => {
   }
 
   //NOTE if user exist check password
-  if (password === user.password) {
-    const payload = {
-      name: user.name,
-      id: user._id,
-    };
-    //NOTE if password match generate token and send it to response
-    const token = generateToken(payload);
-    return res.status(200).json({
-      message: 'password',
-      data: {
-        token,
-      },
-    });
-  } else {
+  const isMatched = await bcrypt.compare(password, user.password);
+  console.log(isMatched);
+
+  if (!isMatched) {
     return res.status(400).json({
       message: 'Password do not match',
     });
   }
+
+  const payload = {
+    name: user.name,
+    id: user._id,
+  };
+  //NOTE if password match generate token and send it to response
+  const token = generateToken(payload);
+  return res.status(200).json({
+    message: 'Login Successfull',
+    data: {
+      token,
+    },
+  });
 };
 
 export const register = async (req, res) => {
@@ -48,6 +51,7 @@ export const register = async (req, res) => {
 
   //hash password
   const hashedPassword = await bcrypt.hash(password, 10);
+
   const userData = {
     name,
     email,

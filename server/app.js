@@ -2,9 +2,11 @@ import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import userRoutes from './routes/userRoutes.js';
-
+import cors from 'cors'
 const app = express();
 dotenv.config();
+//allow  cors from the backend
+app.use(cors())
 app.use(express.json());
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
