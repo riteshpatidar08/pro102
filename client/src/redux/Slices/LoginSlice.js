@@ -6,10 +6,17 @@ const initialState = {
   error: null,
 };
 
-export const login = createAsyncThunk('/login', async (data) => {
-  const res = await axios.post('http://localhost:3000/auth/login', data);
-  return res.data;
-});
+export const login = createAsyncThunk(
+  '/login',
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await axios.post('http://localhost:3000/auth/login', data);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response);
+    }
+  }
+);
 
 const loginSlice = createSlice({
   name: 'login',
@@ -22,6 +29,11 @@ const loginSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         (state.loading = false), console.log(action.payload);
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.loading = false;
+        console.log(action.payload);
+        state.error = action.payload.data.message;
       });
   },
 });

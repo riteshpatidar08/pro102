@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../redux/Slices/LoginSlice';
-import { useDispatch ,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
- const {loading} = useSelector((state)=> state.login)
+  const { loading, error } = useSelector((state) => state.login);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,17 +17,15 @@ const Login = () => {
     try {
       e.preventDefault();
       const data = { email, password };
-      dispatch(login(data))
+      dispatch(login(data));
       navigate('/home');
-    } catch (error) {
-        
-    }
+    } catch (error) {}
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <label className='text-3xl font-bold text-green-500'>Email</label>
+        <label className="text-3xl font-bold text-green-500">Email</label>
         <input
           type="email"
           value={email}
@@ -41,6 +39,7 @@ const Login = () => {
         />
         <button type="submit">{loading ? 'logging in ...' : 'Login'}</button>
       </form>
+      <h1>{error}</h1>
       <h2>{success}</h2>
     </div>
   );
