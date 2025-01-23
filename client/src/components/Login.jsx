@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../redux/Slices/LoginSlice';
+import { useDispatch ,useSelector } from 'react-redux';
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+
+ const {loading} = useSelector((state)=> state.login)
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [success, setSuccess] = useState('');
@@ -11,19 +17,17 @@ const Login = () => {
     try {
       e.preventDefault();
       const data = { email, password };
-      const res = await axios.post('http://localhost:3000/auth/login', data);
-      if (res.status === 200) {
-        setSuccess(res.data.message);
-        localStorage.setItem('token', res.data.data.token);
-        navigate('/home');
-      }
-    } catch (error) {}
+      dispatch(login(data))
+      navigate('/home');
+    } catch (error) {
+        
+    }
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <label>Email</label>
+        <label className='text-3xl font-bold text-green-500'>Email</label>
         <input
           type="email"
           value={email}
@@ -35,7 +39,7 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Login</button>
+        <button type="submit">{loading ? 'logging in ...' : 'Login'}</button>
       </form>
       <h2>{success}</h2>
     </div>
