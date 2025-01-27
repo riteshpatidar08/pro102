@@ -29,6 +29,8 @@ const loginSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         (state.loading = false), console.log(action.payload);
+        localStorage.setItem('token' , action.payload.data.token
+        )
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;

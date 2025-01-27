@@ -1,9 +1,13 @@
-import React from 'react'
+import React  , {useEffect} from 'react'
+import Carousel from './Carousel'
 
 function Homepage() {
+   useEffect(()=>{
+        document.title = "Home"
+    },[])
   return (
     <div>
-      HomePage
+    <Carousel/>
     </div>
   )
 }

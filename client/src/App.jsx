@@ -4,27 +4,21 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Homepage from './components/Homepage';
 import PrivateRoutes from './components/PrivateRoutes';
-import { useSelector , useDispatch } from 'react-redux';
-import { increment ,decrement } from './redux/Slices/CounterSlice';
+import Navbar from './components/Navbar';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Mens from './components/Mens';
 const App = () => {
-  const dispatch = useDispatch()
-  const { count } = useSelector((state) => {
-    console.log(state);
-    return state.counter;
-  });
-  console.log(count);
-  const handleClick = () => {
-    dispatch(increment())
-  }
-  const handleDecrement = () => {
-    dispatch(decrement())
-  }
+
+
+
   return (
     <div>
-      
+      <Navbar/>
       <Routes>
         <Route element={<PrivateRoutes />}>
-          <Route path="/home" element={<Homepage />} />
+          <Route path="/" element={<Homepage />} />
+          <Route path='/mens' element={<Mens/>}/>
         </Route>
 
         <Route path="/login" element={<Login />} />

@@ -17,8 +17,8 @@ const Login = () => {
     try {
       e.preventDefault();
       const data = { email, password };
-      dispatch(login(data));
-      navigate('/home');
+    await  dispatch(login(data));
+      navigate('/');
     } catch (error) {}
   };
 
@@ -39,8 +39,7 @@ const Login = () => {
         />
         <button type="submit">{loading ? 'logging in ...' : 'Login'}</button>
       </form>
-      <h1>{error}</h1>
-      <h2>{success}</h2>
+      
     </div>
   );
 };
