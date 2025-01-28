@@ -42,6 +42,7 @@ export const register = async (req, res) => {
   const { name, email, password, phoneNumber } = req.body;
   const user = await User.findOne({ email });
   console.log(password);
+  console.log(req.file);
   //check if user already exist
   if (user) {
     return res.status(400).json({
@@ -57,6 +58,7 @@ export const register = async (req, res) => {
     email,
     phoneNumber,
     password: hashedPassword,
+    avatar: req.file.path,
   };
   console.log(hashedPassword);
   const newUser = await User.create(userData);

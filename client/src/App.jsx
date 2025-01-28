@@ -16,12 +16,14 @@ const App = () => {
     <div>
       <Navbar/>
       <Routes>
-        <Route element={<PrivateRoutes />}>
           <Route path="/" element={<Homepage />} />
           <Route path='/mens' element={<Mens/>}/>
+
+        <Route element={<PrivateRoutes />}>
+        
         </Route>
 
-        <Route path="/login" element={<Login />} />
+       
         <Route path="/register" element={<Register />} />
       </Routes>
     </div>

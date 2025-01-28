@@ -11,7 +11,18 @@ const Register = () => {
   console.log(errors);
 
   const onSubmit = async (data) => {
-    const res = await axios.post('http://localhost:3000/auth/register', data);
+    console.log(data.avatar[0]);
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('email', data.email);
+    formData.append('phoneNumber', data.phoneNumber);
+    formData.append('password', data.password);
+    formData.append('avatar', data.avatar[0]);
+    console.log(formData);
+    const res = await axios.post(
+      'http://localhost:3000/auth/register',
+      formData
+    );
     console.log(res);
   };
 
@@ -45,6 +56,13 @@ const Register = () => {
           className="w-64 border border-slate-500 block rounded-full p-2"
           type="password"
           {...register('password')}
+        />
+
+        <label className="block">Profile</label>
+        <input
+          className="w-64 border border-slate-500 block rounded-full p-2"
+          type="file"
+          {...register('avatar')}
         />
         <button
           className="px-10 cursor-pointer py-2 bg-sky-500 text-white font-smibold rounded-full mt-2"

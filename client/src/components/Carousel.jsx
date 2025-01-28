@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import men from './../assets/men.png'
 import beg from './../assets/beg.png'
 import women from './../assets/women.png'
+import './Carousel.css'
 export default function Carousel() {
   var settings = {
     dots: true,
