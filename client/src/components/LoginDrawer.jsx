@@ -10,9 +10,9 @@ export default function LoginDrawer({ opened, close, isSignUpClick }) {
         opened={opened}
         position="right"
         onClose={close}
-        title={isSignUpClick ? 'Register' : 'Login'}
+        // title={isSignUpClick ? 'Register' : 'Login'}
       >
-        {isSignUpClick ? <Register /> : <Login />}
+        {isSignUpClick ? <Register /> : <Login close={close} />}
       </Drawer>
     </>
   );

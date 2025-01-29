@@ -27,6 +27,7 @@ export const login = async (req, res) => {
   const payload = {
     name: user.name,
     id: user._id,
+    role : user.role
   };
   //NOTE if password match generate token and send it to response
   const token = generateToken(payload);

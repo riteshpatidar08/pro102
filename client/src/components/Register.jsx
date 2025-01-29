@@ -1,6 +1,17 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import {
+  TextInput,
+  PasswordInput,
+  Button,
+  FileInput,
+  Container,
+  Title,
+  Text,
+  Paper,
+} from '@mantine/core';
+
 const Register = () => {
   const {
     register,
@@ -8,17 +19,15 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  console.log(errors);
-
   const onSubmit = async (data) => {
-    console.log(data.avatar[0]);
     const formData = new FormData();
+    console.log(data.avatar[0]);
     formData.append('name', data.name);
     formData.append('email', data.email);
     formData.append('phoneNumber', data.phoneNumber);
     formData.append('password', data.password);
     formData.append('avatar', data.avatar[0]);
-    console.log(formData);
+
     const res = await axios.post(
       'http://localhost:3000/auth/register',
       formData
@@ -27,51 +36,52 @@ const Register = () => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center">
+    <Container size={420} my={40}>
+      <Title align="center">Sign Up for the Best Shopping Experience!</Title>
+      <Text align="center" c="dimmed" size="sm" mb={20}>
+        Create an account to explore exclusive deals and discounts
+      </Text>
+
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label className="block text-sm font-semibold mb-2">Name</label>
-        <input
-          className="w-64 border border-slate-500 rounded-full p-2"
-          placeholder="Enter name"
-          type="text"
+        <TextInput
+          label="Name"
+          placeholder="Enter your name"
           {...register('name', { required: 'Name is required' })}
+          error={errors.name?.message}
         />
-        {errors.name && (
-          <p className="text-red-500 text-xs">{errors.name.message}</p>
-        )}
-        <label className="block">Email</label>
-        <input
-          className="w-64 border border-slate-500 rounded-full p-2"
-          type="email"
-          {...register('email')}
+
+        <TextInput
+          mt="md"
+          label="Email"
+          placeholder="Enter your email"
+          {...register('email', { required: 'Email is required' })}
+          error={errors.email?.message}
         />
-        <label className="block">Phone Number</label>
-        <input
-          className="w-64 border border-slate-500 rounded-full p-2"
-          type="number"
-          {...register('phoneNumber')}
+
+        <TextInput
+          mt="md"
+          label="Phone Number"
+          placeholder="Enter your phone number"
+          {...register('phoneNumber', { required: 'Phone number is required' })}
+          error={errors.phoneNumber?.message}
         />
-        <label className="block">Password</label>
-        <input
-          className="w-64 border border-slate-500 block rounded-full p-2"
-          type="password"
-          {...register('password')}
+
+        <PasswordInput
+          mt="md"
+          label="Password"
+          placeholder="Enter your password"
+          {...register('password', { required: 'Password is required' })}
+          error={errors.password?.message}
         />
 
         <label className="block">Profile</label>
-        <input
-          className="w-64 border border-slate-500 block rounded-full p-2"
-          type="file"
-          {...register('avatar')}
-        />
-        <button
-          className="px-10 cursor-pointer py-2 bg-sky-500 text-white font-smibold rounded-full mt-2"
-          type="submit"
-        >
-          Register
-        </button>
+        <input type="file" mt="md" {...register('avatar')} />
+
+        <Button fullWidth mt="lg" type="submit" color="blue">
+          Sign Up
+        </Button>
       </form>
-    </div>
+    </Container>
   );
 };
 

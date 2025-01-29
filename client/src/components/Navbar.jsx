@@ -1,28 +1,34 @@
-import React ,{useState} from 'react';
+import React, { useState } from 'react';
 import logo from './../assets/logo1.png';
 import { Link, useLocation } from 'react-router-dom';
 import Navlink from './Navlink';
 import { Heart, LogIn, ShoppingBag, UserPlus } from 'lucide-react';
 import { useDisclosure } from '@mantine/hooks';
 import LoginDrawer from './LoginDrawer';
-
+import { useSelector } from 'react-redux';
+import ProfileDropdown from './ProfileDropdown';
 function Navbar() {
   const [opened, { open, close }] = useDisclosure(false);
-  const [isSignUpClick , setSignUpClick] = useState(false)
+  const [isSignUpClick, setSignUpClick] = useState(false);
+  const {role,token} = useSelector((state)=>state.login) ;
+  console.log(token)
+
+  // const token = localStorage.getItem('token');
+
   const navlinkData = [
     { path: '/', title: 'Home' },
     { path: '/mens', title: 'Mens' },
     { path: '/womens', title: 'Women' },
     { path: '/kids', title: 'Kids' },
   ];
-  const handleSignUp =() => {
-    open()
-    setSignUpClick(true)
-  }
+  const handleSignUp = () => {
+    open();
+    setSignUpClick(true);
+  };
   const handleLogIn = () => {
-    setSignUpClick(false)
-    open()
-  }
+    setSignUpClick(false);
+    open();
+  };
   return (
     <div className="sticky top-0 z-10">
       <header>
@@ -43,15 +49,7 @@ function Navbar() {
           </div>
 
           {/* logos and menu items */}
-          <div className="flex gap-10">
-            <div>
-              <LogIn />
-              <Link onClick={handleLogIn}>Login</Link>
-            </div>
-            <div>
-              <UserPlus />
-              <Link onClick={handleSignUp}>SignUp</Link>
-            </div>
+          <div className="flex gap-8">
             <div>
               <ShoppingBag />
               <span>Cart</span>
@@ -60,6 +58,21 @@ function Navbar() {
               <Heart />
               <span>Wishlist</span>
             </div>
+            {!token ? (
+              <div className="flex gap-8">
+                {' '}
+                <div>
+                  <LogIn />
+                  <Link onClick={handleLogIn}>Login</Link>
+                </div>
+                <div>
+                  <UserPlus />
+                  <Link onClick={handleSignUp}>SignUp</Link>
+                </div>
+              </div>
+            ) : (
+              <ProfileDropdown />
+            )}
           </div>
         </div>
 
@@ -69,7 +82,11 @@ function Navbar() {
           ))}
         </div>
       </header>
-      <LoginDrawer close={close} opened={opened} isSignUpClick={isSignUpClick} />
+      <LoginDrawer
+        close={close}
+        opened={opened}
+        isSignUpClick={isSignUpClick}
+      />
     </div>
   );
 }
