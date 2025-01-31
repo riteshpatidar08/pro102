@@ -8,12 +8,14 @@ import Navbar from './components/Navbar';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Mens from './components/Mens';
+import {Toaster} from 'sonner' ;
 const App = () => {
 
 
 
   return (
     <div>
+      <Toaster/>
       <Navbar/>
       <Routes>
           <Route path="/" element={<Homepage />} />

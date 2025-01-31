@@ -10,8 +10,9 @@ import ProfileDropdown from './ProfileDropdown';
 function Navbar() {
   const [opened, { open, close }] = useDisclosure(false);
   const [isSignUpClick, setSignUpClick] = useState(false);
-  const {role,token} = useSelector((state)=>state.login) ;
-  console.log(token)
+
+  const { role, token } = useSelector((state) => state.login);
+  console.log(token);
 
   // const token = localStorage.getItem('token');
 
@@ -30,7 +31,7 @@ function Navbar() {
     open();
   };
   return (
-    <div className="sticky top-0 z-10">
+    <div className="sticky top-0 z-10 bg-white ">
       <header>
         <div className="flex mt-2  justify-between items-center p-2 mx-4">
           {/* for logo and webstie name */}
@@ -50,9 +51,11 @@ function Navbar() {
 
           {/* logos and menu items */}
           <div className="flex gap-8">
-            <div>
+            <div className="cursor-pointer">
               <ShoppingBag />
-              <span>Cart</span>
+              <span className="hover:underline hover:underline-offset-1 ">
+                Cart
+              </span>
             </div>
             <div>
               <Heart />

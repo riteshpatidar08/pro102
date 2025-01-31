@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../redux/Slices/LoginSlice';
+import { Loader } from '@mantine/core';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   TextInput,
@@ -65,7 +66,7 @@ const Login = ({close}) => {
         </Text>
 
         <Button fullWidth mt="lg" type="submit" color="blue">
-          {loading ? 'Logging in ...' : 'Login'}
+          {loading ? <Loader color='white' size='sm'/> : 'Login'}
         </Button>
       </form>
     </Container>

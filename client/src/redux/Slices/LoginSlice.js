@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import { toast } from 'sonner';
+
+
 const initialState = {
   loading: false,
   error: null,
@@ -8,6 +11,7 @@ const initialState = {
   role: localStorage.getItem('role') || null,
   name: null,
   id: null,
+  avatar : null
 };
 
 export const login = createAsyncThunk(
@@ -31,7 +35,7 @@ const loginSlice = createSlice({
       localStorage.removeItem('id');
       localStorage.removeItem('role');
       localStorage.removeItem('name');
-      state.token = null
+      state.token = null;
     },
   },
   extraReducers: (builder) => {
@@ -50,6 +54,8 @@ const loginSlice = createSlice({
         localStorage.setItem('name', name);
         state.id = id;
         localStorage.setItem('id', id);
+        toast.success(action.payload.message);
+        state.avatar = action.payload.data.avatar
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
