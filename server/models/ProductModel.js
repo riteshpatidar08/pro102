@@ -1,30 +1,34 @@
 import mongoose from 'mongoose';
 
-
 const ProductSchema = new mongoose.Schema({
-    name : {
-        type : String
-    },
-    price : {
-        type : Number
-    },
-    category : {
-        type : String
-    },
-    productDescription : {
-        type : String
-    },
-    discountPercantage : {
-        type : Number
-    } ,
-    stock : {
-        type : Number
-    },
-    image  : {
-        type  : String
-    }
-})
+  name: {
+    type: String,
+  },
+  price: {
+    type: Number,
+  },
+  category: {
+    type: String,
+  },
+  productDescription: {
+    type: String,
+  },
+  discountPercantage: {
+    type: Number,
+  },
+  stock: {
+    type: Number,
+  },
+  image: {
+    type: String,
+  },
+});
 
-const Product = mongoose.model('Product', ProductSchema) ;
+ProductSchema.virtual('discountPrice').get(function () {
+  return this.price - (this.price * this.discountPercantage) / 100;
+});
 
-export default Product
+ProductSchema.set('toJSON', { virtuals: true });
+const Product = mongoose.model('Product', ProductSchema);
+
+export default Product;
