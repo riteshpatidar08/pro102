@@ -7,13 +7,15 @@ import { useDisclosure } from '@mantine/hooks';
 import LoginDrawer from './LoginDrawer';
 import { useSelector } from 'react-redux';
 import ProfileDropdown from './ProfileDropdown';
+import { Badge } from '@mantine/core'
 function Navbar() {
   const [opened, { open, close }] = useDisclosure(false);
   const [isSignUpClick, setSignUpClick] = useState(false);
 
   const { role, token } = useSelector((state) => state.login);
+  const {totalItems} = useSelector((state)=>state.cart)
   console.log(token);
-
+console.log(totalItems)
   // const token = localStorage.getItem('token');
 
   const navlinkData = [
@@ -33,7 +35,7 @@ function Navbar() {
   return (
     <div className="sticky top-0 z-10 bg-white ">
       <header>
-        <div className="flex mt-2  justify-between items-center p-2 mx-4">
+        <div className="flex mt-4  justify-between items-center p-2 mx-4">
           {/* for logo and webstie name */}
           <div className="flex gap-4 items-center">
             <img src={logo} className="w-16" />
@@ -51,11 +53,16 @@ function Navbar() {
 
           {/* logos and menu items */}
           <div className="flex gap-8">
-            <div className="cursor-pointer">
+            <div className=" relative cursor-pointer">
               <ShoppingBag />
-              <span className="hover:underline hover:underline-offset-1 ">
+ <Badge className='absolute -top-1 right-4' size="sm" circle>
+       {totalItems}
+      </Badge>
+              <Link to='/cart' className="hover:underline hover:underline-offset-1 ">
+
                 Cart
-              </span>
+              </Link>
+
             </div>
             <div>
               <Heart />
@@ -79,7 +86,7 @@ function Navbar() {
           </div>
         </div>
 
-        <div className="flex justify-center items-center gap-4 text-md border-b-1 p-4 font-semibold">
+        <div className="flex justify-center items-center gap-4 text-md  p-4 font-semibold">
           {navlinkData.map((link) => (
             <Navlink path={link.path} title={link.title} />
           ))}

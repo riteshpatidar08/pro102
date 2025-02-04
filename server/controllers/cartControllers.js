@@ -47,10 +47,11 @@ export const addToCart = async (req, res) => {
 export const getCart = async (req, res) => {
   const { userId } = req.params;
   const cart = await Cart.findOne({ userId }).populate('items.productId');
-  res.status(200).json({ message: 'Cart item fetched Successfull', cart });
+  const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+  res
+    .status(200)
+    .json({ message: 'Cart item fetched Successfull', cart, totalItems });
 };
-
-
 
 export const removeItemFromCart = async (req, res) => {
   const { userId, productId } = req.params;
@@ -77,6 +78,69 @@ export const clearCart = async (req, res) => {
     const { userId } = req.params;
     const cart = await Cart.findOneAndDelete({ userId });
     res.status(200).json({ messsage: 'Cart cleared' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const increaseQuantity = async (req, res) => {
+  try {
+    const { userId, productId } = req.params;
+    const cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ message: 'Cart not found' });
+    }
+
+    const item = cart.items.find(
+      (item) => item.productId.toString() === productId
+    );
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found in cart' });
+    }
+
+    item.quantity += 1;
+    cart.totalPrice = cart.items.reduce(
+      (sum, item) => sum + item.quantity * item.productId.price,
+      0
+    );
+
+    await cart.save();
+    res.status(200).json({ message: 'Quantity increased', cart });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const decreaseQuantity = async (req, res) => {
+  try {
+    const { userId, productId } = req.params;
+    const cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ message: 'Cart not found' });
+    }
+
+    const itemIndex = cart.items.findIndex(
+      (item) => item.productId.toString() === productId
+    );
+    if (itemIndex === -1) {
+      return res.status(404).json({ message: 'Item not found in cart' });
+    }
+
+    if (cart.items[itemIndex].quantity > 1) {
+      cart.items[itemIndex].quantity -= 1;
+    } else {
+      cart.items.splice(itemIndex, 1);
+    }
+
+    cart.totalPrice = cart.items.reduce(
+      (sum, item) => sum + item.quantity * item.productId.price,
+      0
+    );
+
+    await cart.save();
+    res.status(200).json({ message: 'Quantity decreased', cart });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -3,11 +3,13 @@ import { Menu, Avatar } from '@mantine/core';
 import { logOut } from '../redux/Slices/LoginSlice';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { clearTotalItems } from '../redux/Slices/CartSlice';
 function ProfileDropdown() {
   const dispatch = useDispatch();
   const { avatar } = useSelector((state) => state.login);
   const handleLogout = () => {
     dispatch(logOut());
+    dispatch(clearTotalItems())
   };
   console.log(avatar);
   return (

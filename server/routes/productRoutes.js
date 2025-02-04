@@ -9,4 +9,5 @@ const ProductRoutes = express.Router();
 ProductRoutes.post('/products', upload.single('image'), createProduct);
 ProductRoutes.get('/products', getProduct);
 
+
 export default ProductRoutes;

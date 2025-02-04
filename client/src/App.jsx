@@ -9,6 +9,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Mens from './components/Mens';
 import {Toaster} from 'sonner' ;
+import Footer from './components/Footer';
+import CartPage from './components/CartPage';
 const App = () => {
 
 
@@ -22,12 +24,13 @@ const App = () => {
           <Route path='/mens' element={<Mens/>}/>
 
         <Route element={<PrivateRoutes />}>
-        
+        <Route path='/cart' element={<CartPage/>}/>
         </Route>
 
        
         <Route path="/register" element={<Register />} />
       </Routes>
+      <Footer/>
     </div>
   );
 };
