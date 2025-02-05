@@ -6,7 +6,7 @@ import ProductRoutes from './routes/productRoutes.js';
 import cors from 'cors';
 import cartRoutes from './routes/cartRoutes.js';
 import admin from 'firebase-admin' ;
-import ServiceAccount from './Key/test-1bf72-firebase-adminsdk-pg6k8-a9133e1a98.json'  with {type: 'json'}  ;
+// import ServiceAccount from './Key/test-1bf72-firebase-adminsdk-pg6k8-a9133e1a98.json'  with {type: 'json'}  ;
 
 const app = express();
 
