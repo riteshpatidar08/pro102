@@ -1,7 +1,7 @@
 import User from './../models/userModel.js';
 import generateToken from '../utils/jwt.js';
 import bcrypt from 'bcrypt';
-
+import admin from 'firebase-admin'
 export const login = async (req, res) => {
   const { email, password } = req.body;
   //NOTE check if user exist in database
@@ -69,3 +69,23 @@ export const register = async (req, res) => {
     data: newUser,
   });
 };
+
+export const googleLogin = async(req,res) => {
+  try {
+    const {idtoken} = req.body 
+
+  const decodedtoken = await admin.auth().verifyIdToken(idtoken)
+  console.log(decodedtoken) ;
+  const payload = {
+   user : decodedtoken
+  };
+  const token = generateToken(payload)
+  res.status(200).json({
+    token
+  }
+    )
+  } catch (error) {
+    
+  }
+  
+}

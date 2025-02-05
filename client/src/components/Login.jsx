@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../redux/Slices/LoginSlice';
 import { Loader } from '@mantine/core';
 import { useDispatch, useSelector } from 'react-redux';
+import { signInWithGoogle } from '../auth';
 import {
   TextInput,
   PasswordInput,
@@ -14,7 +15,7 @@ import {
   Text,
 } from '@mantine/core';
 
-const Login = ({close}) => {
+const Login = ({ close }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.login);
@@ -26,7 +27,7 @@ const Login = ({close}) => {
       e.preventDefault();
       const data = { email, password };
       await dispatch(login(data));
-      close()
+      close();
       navigate('/');
     } catch (error) {}
   };
@@ -66,8 +67,9 @@ const Login = ({close}) => {
         </Text>
 
         <Button fullWidth mt="lg" type="submit" color="blue">
-          {loading ? <Loader color='white' size='sm'/> : 'Login'}
+          {loading ? <Loader color="white" size="sm" /> : 'Login'}
         </Button>
+        <Button onClick={signInWithGoogle}>Sign with Google</Button>
       </form>
     </Container>
   );
