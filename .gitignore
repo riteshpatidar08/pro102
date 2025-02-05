@@ -1,3 +1,4 @@
 server/node_modules
+server/Key
 client/node_modules
 .env
