@@ -5,7 +5,7 @@ const initialState = {
   cartItems: [],
   totalItems: 0,
   loading: false,
-  totalPrice : 0,
+  totalPrice: 0,
   error: null,
 };
 
@@ -36,10 +36,10 @@ export const getCart = createAsyncThunk(
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
-  reducers : {
-clearTotalItems : function(state,action){
-    state.totalItems = 0
-}
+  reducers: {
+    clearTotalItems: function (state, action) {
+      state.totalItems = 0;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -57,10 +57,10 @@ clearTotalItems : function(state,action){
         state.loading = false;
         state.totalItems = action.payload.totalItems;
         state.cartItems = action.payload.cart.items;
-        state.totalPrice = action.payload.cart.totalPrice
+        state.totalPrice = action.payload.cart.totalPrice;
       });
   },
 });
 
 export default cartSlice.reducer;
-export const {clearTotalItems} = cartSlice.actions
+export const { clearTotalItems } = cartSlice.actions;

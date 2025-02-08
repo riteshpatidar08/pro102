@@ -1,7 +1,7 @@
 import User from './../models/userModel.js';
 import generateToken from '../utils/jwt.js';
 import bcrypt from 'bcrypt';
-import admin from 'firebase-admin'
+import admin from 'firebase-admin';
 export const login = async (req, res) => {
   const { email, password } = req.body;
   //NOTE check if user exist in database
@@ -70,22 +70,41 @@ export const register = async (req, res) => {
   });
 };
 
-export const googleLogin = async(req,res) => {
+export const googleLogin = async (req, res) => {
   try {
-    const {idtoken} = req.body 
+    const { idtoken } = req.body;
 
-  const decodedtoken = await admin.auth().verifyIdToken(idtoken)
-  console.log(decodedtoken) ;
-  const payload = {
-   user : decodedtoken
-  };
-  const token = generateToken(payload)
-  res.status(200).json({
-    token
-  }
-    )
+    const decodedtoken = await admin.auth().verifyIdToken(idtoken);
+    console.log(decodedtoken);
+    const { email, name, picture } = decodedtoken;
+
+    let user = await User.findOne({ email });
+    //  if (user) {
+    //     return res.status(400).json({
+    //       message: 'User already exists ,Please Login',
+    //     });
+    //   }
+
+    if (!user) {
+      user = await User.create({
+        name,
+        email,
+        avatar: picture,
+        role: 'user',
+        password: 'google-auth',
+      });
+    }
+    const payload = {
+      id: user._id,
+      role: user.role,
+    };
+    console.log(user)
+    const token = generateToken(payload);
+    console.log(token)
+    res.status(200).json({
+      token,
+    });
   } catch (error) {
-    
+    console.log(error)
   }
-  
-}
+};

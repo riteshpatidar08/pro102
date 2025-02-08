@@ -47,7 +47,7 @@ export const addToCart = async (req, res) => {
 export const getCart = async (req, res) => {
   const { userId } = req.params;
   const cart = await Cart.findOne({ userId }).populate('items.productId');
-  const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+  const totalItems = cart?.items?.reduce((sum, item) => sum + item.quantity, 0);
   res
     .status(200)
     .json({ message: 'Cart item fetched Successfull', cart, totalItems });

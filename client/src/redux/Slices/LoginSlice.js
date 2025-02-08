@@ -2,16 +2,16 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { toast } from 'sonner';
-
-
+import { auth, googleProvider } from './../../config/firebase';
+import { signInWithPopup } from 'firebase/auth';
 const initialState = {
   loading: false,
   error: null,
   token: localStorage.getItem('token') || null,
   role: localStorage.getItem('role') || null,
   name: null,
-  id: null,
-  avatar : null
+  id: localStorage.getItem('id') || null,
+  avatar: null,
 };
 
 export const login = createAsyncThunk(
@@ -26,6 +26,23 @@ export const login = createAsyncThunk(
   }
 );
 
+export const signInWithGoogle = createAsyncThunk('/googlelogin', async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    console.log(result);
+    const user = result.user;
+    console.log(user);
+    const idtoken = await user.getIdToken();
+    console.log(idtoken);
+
+    const response = await axios.post(
+      'http://localhost:3000/auth/google-login',
+      { idtoken }
+    );
+    return response.data.token;
+  } catch (err) {}
+});
+
 const loginSlice = createSlice({
   name: 'login',
   initialState,
@@ -36,6 +53,12 @@ const loginSlice = createSlice({
       localStorage.removeItem('role');
       localStorage.removeItem('name');
       state.token = null;
+    },
+    updateIdTokenRole: (state, action) => {
+      console.log(action.payload);
+      state.token = action.payload.token;
+      state.role = action.payload.role;
+      state.id = action.payload.id;
     },
   },
   extraReducers: (builder) => {
@@ -55,15 +78,31 @@ const loginSlice = createSlice({
         state.id = id;
         localStorage.setItem('id', id);
         toast.success(action.payload.message);
-        state.avatar = action.payload.data.avatar
+        state.avatar = action.payload.data.avatar;
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
         console.log(action.payload);
         state.error = action.payload.data.message;
+      })
+      .addCase(signInWithGoogle.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(signInWithGoogle.fulfilled, (state, action) => {
+       
+        state.loading = false;
+        console.log(action.payload);
+        const { id, role } = jwtDecode(action.payload);
+          state.id = id;
+        state.role = role;
+        state.token = action.payload;
+        localStorage.setItem('token', action.payload);
+        localStorage.setItem('id', id);
+        localStorage.setItem('role', role);
+      // window.location.href('/')
       });
   },
 });
 
-export const { logOut } = loginSlice.actions;
+export const { logOut, updateIdTokenRole } = loginSlice.actions;
 export default loginSlice.reducer;

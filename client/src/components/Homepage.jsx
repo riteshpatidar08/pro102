@@ -3,22 +3,26 @@ import Carousel from './Carousel';
 import GridSection from './GridSection';
 import ProductCard from './ProductCard';
 import { getProducts } from '../redux/Slices/ProductSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ProductList from './ProductList';
 import { getCart } from '../redux/Slices/CartSlice';
 function Homepage() {
   const dispatch = useDispatch();
+  const { id } = useSelector((state) => state.login);
+  console.log(id);
+  
   useEffect(() => {
     document.title = 'Home';
     dispatch(getProducts());
-    if(localStorage.getItem('id')){
-    dispatch(getCart(localStorage.getItem('id'))) }
-  }, []);
+    if (id) {
+      dispatch(getCart(id));
+    }
+  }, [id]);
   return (
     <div>
       <Carousel />
       <GridSection />
-    <ProductList/>
+      <ProductList />
     </div>
   );
 }

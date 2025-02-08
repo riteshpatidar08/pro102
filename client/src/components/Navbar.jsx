@@ -17,7 +17,7 @@ function Navbar() {
   console.log(token);
 console.log(totalItems)
   // const token = localStorage.getItem('token');
-
+console.log(token)
   const navlinkData = [
     { path: '/', title: 'Home' },
     { path: '/mens', title: 'Mens' },

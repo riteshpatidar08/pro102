@@ -5,32 +5,29 @@ import Register from './components/Register';
 import Homepage from './components/Homepage';
 import PrivateRoutes from './components/PrivateRoutes';
 import Navbar from './components/Navbar';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import Mens from './components/Mens';
-import {Toaster} from 'sonner' ;
+import { Toaster } from 'sonner';
 import Footer from './components/Footer';
 import CartPage from './components/CartPage';
+
 const App = () => {
-
-
-
   return (
     <div>
-      <Toaster/>
-      <Navbar/>
+      <Toaster />
+      <Navbar />
       <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path='/mens' element={<Mens/>}/>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/mens" element={<Mens />} />
 
         <Route element={<PrivateRoutes />}>
-        <Route path='/cart' element={<CartPage/>}/>
+          <Route path="/cart" element={<CartPage />} />
         </Route>
 
-       
         <Route path="/register" element={<Register />} />
       </Routes>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
